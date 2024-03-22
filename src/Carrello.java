@@ -5,15 +5,20 @@ public class Carrello {
 
     public void aggiungiProdottoAlCarrello(int id, Magazzino magazzino){
         Prodotto prodottoDaAggiungere = magazzino.cercaProdottoPerId(id);
-        prodottiNelCarrello.add(prodottoDaAggiungere);
-        magazzino.rimuoviProdotto(prodottoDaAggiungere);
-
+        if(!prodottoDaAggiungere.getTipoProdotto().equalsIgnoreCase("Inesistente")){
+            prodottiNelCarrello.add(prodottoDaAggiungere);
+            magazzino.rimuoviProdotto(prodottoDaAggiungere);
+        }else{
+            System.out.println("Prodotto non trovato");
+        }
     }
     public void rimuoviProdottoDalCarrello(int id, Magazzino magazzino){
         Prodotto prodottoDaRimuovere = magazzino.cercaProdottoPerId(id);
-        prodottiNelCarrello.remove(prodottoDaRimuovere);
-        magazzino.aggiungiProdotto(prodottoDaRimuovere);
-
+        if(!prodottoDaRimuovere.getTipoProdotto().equalsIgnoreCase("Inesistente")){
+            prodottiNelCarrello.remove(prodottoDaRimuovere);
+            magazzino.aggiungiProdotto(prodottoDaRimuovere);
+        }else {
+            System.out.println("Prodotto non trovato");}
     }
     public void finalizzaAcquisto(){
         prodottiNelCarrello.clear();
