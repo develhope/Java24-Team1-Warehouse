@@ -1,5 +1,5 @@
 public class Prodotto {
-    private int id;
+    private Integer id;
     private String tipoProdotto;
     private String produttore;
     private String modello;
@@ -9,7 +9,11 @@ public class Prodotto {
     private double prezzoVendita;
     private String descrizione;
 
-    public Prodotto(int id, String tipoProdotto, String produttore, String modello, float dimensioniDisplay, float dimensioneMemoria, double prezzoAcquisto, double prezzoVendita, String descrizione) {
+    public Prodotto(String tipoProdotto) {
+        this.tipoProdotto = tipoProdotto;
+    }
+
+    public Prodotto(Integer id, String tipoProdotto, String produttore, String modello, float dimensioniDisplay, float dimensioneMemoria, double prezzoAcquisto, double prezzoVendita, String descrizione) {
         this.id = id;
         this.tipoProdotto = tipoProdotto;
         this.produttore = produttore;
@@ -19,6 +23,10 @@ public class Prodotto {
         this.prezzoAcquisto = prezzoAcquisto;
         this.prezzoVendita = prezzoVendita;
         this.descrizione = descrizione;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTipoProdotto() {
