@@ -10,10 +10,7 @@ public class Cliente extends Utente {
         this.password = password;
     }
 
-    @Override
-    public String getNomeUtente() {
-        return super.getNomeUtente();
-    }
+
 
     public void  aggiungiAlCarrello(Prodotto prodotto) {
         this.carrello.aggiungiProdottoAlCarrello(prodotto);
