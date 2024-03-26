@@ -1,3 +1,5 @@
+package models;
+
 import java.util.ArrayList;
 
 public class Magazzino {
@@ -17,7 +19,6 @@ public class Magazzino {
         Prodotto prodottoNull = new Prodotto("inesistente");
         for(Prodotto prodotto:this.magazzino){
             if (prodotto.getId() == id) {
-                System.out.println(prodotto);
                 return prodotto;
             }
         }
@@ -44,7 +45,7 @@ public class Magazzino {
             }
         }
         if(counter == 0){
-            System.out.println("Nessun prodotto trovato");
+            System.out.println("NESSSUN PRODOTTO TROVATO");
         }
     }
     public void cercaProdottoPerProduttore(String produttore){
@@ -106,5 +107,40 @@ public class Magazzino {
         for (Prodotto prodotto:this.magazzino){
             System.out.println(prodotto);
         }
+    }
+
+    public void popolaMagazzino() {
+        Prodotto prod1 = new Prodotto(
+                2134,
+                "Telefono",
+                "io",
+                "dd",
+                2.4F,
+                2.4F,
+                2.56,
+                6.36,
+                "kysd"
+        );
+        Prodotto prod2 = new Prodotto(
+                213,
+                "Telefono",
+                "io",
+                "dd",
+                2.4F,
+                2.4F,
+                2.56,
+                6.36,
+                "kysd"
+        );
+
+        this.magazzino.add(prod1);
+        this.magazzino.add(prod2);
+    }
+
+    public boolean isEmpty() {
+        if(this.magazzino.isEmpty()) {
+            return true; //se è vuoto, ritorna vero...
+        }
+        return false; //... altrimenti false
     }
 }
