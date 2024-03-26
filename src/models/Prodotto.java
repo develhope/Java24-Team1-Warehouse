@@ -1,3 +1,5 @@
+package models;
+
 public class Prodotto {
     private Integer id;
     private String tipoProdotto;
@@ -13,7 +15,8 @@ public class Prodotto {
         this.tipoProdotto = tipoProdotto;
     }
 
-    public Prodotto(Integer id, String tipoProdotto, String produttore, String modello, float dimensioniDisplay, float dimensioneMemoria, double prezzoAcquisto, double prezzoVendita, String descrizione) {
+    public Prodotto(Integer id, String tipoProdotto, String produttore, String modello, float dimensioniDisplay,
+                    float dimensioneMemoria, double prezzoAcquisto, double prezzoVendita, String descrizione) {
         this.id = id;
         this.tipoProdotto = tipoProdotto;
         this.produttore = produttore;
@@ -51,7 +54,7 @@ public class Prodotto {
 
     @Override
     public String toString() {
-        return "Prodotto{" +
+        return "models.Prodotto{" +
                 "id=" + id +
                 ", tipoProdotto='" + tipoProdotto + '\'' +
                 ", produttore='" + produttore + '\'' +
