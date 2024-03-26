@@ -1,8 +1,9 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Carrello {
+public class Carrello implements Serializable {
     private ArrayList<Prodotto> prodottiNelCarrello = new ArrayList<>();
 
     public void aggiungiProdottoAlCarrello(Prodotto prodottoDaAggiungere) {

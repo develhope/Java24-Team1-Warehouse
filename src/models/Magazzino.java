@@ -1,9 +1,13 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Magazzino {
+public class Magazzino implements Serializable {
+    private static final long serialVersionUID = 2L;
     private ArrayList<Prodotto> magazzino = new ArrayList<Prodotto>();
+
+
     public void aggiungiProdotto(Prodotto prodottoDaAggiungere){
         this.magazzino.add(prodottoDaAggiungere);
     }
@@ -110,33 +114,6 @@ public class Magazzino {
         }
     }
 
-    public void popolaMagazzino() {
-        Prodotto prod1 = new Prodotto(
-                2134,
-                "Telefono",
-                "io",
-                "dd",
-                2.4F,
-                2.4F,
-                2.56,
-                6.36,
-                "kysd"
-        );
-        Prodotto prod2 = new Prodotto(
-                213,
-                "Telefono",
-                "io",
-                "dd",
-                2.4F,
-                2.4F,
-                2.56,
-                6.36,
-                "kysd"
-        );
-
-        this.magazzino.add(prod1);
-        this.magazzino.add(prod2);
-    }
 
     public boolean isEmpty() {
         if(this.magazzino.isEmpty()) {

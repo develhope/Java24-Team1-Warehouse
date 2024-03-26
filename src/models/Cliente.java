@@ -1,8 +1,9 @@
 package models;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class Cliente extends Utente {
+public class Cliente extends Utente implements Serializable {
     private Carrello carrello = new Carrello();
 
     public Cliente (String nomeUtente, String password) {
@@ -37,5 +38,13 @@ public class Cliente extends Utente {
 
     public boolean isEmpty() {
         return this.carrello.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "nomeUtente='" + nomeUtente + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

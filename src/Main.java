@@ -1,76 +1,185 @@
 import models.*;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
+
 public class Main {
 
-    public static void main(String[] args) {
-        ArrayList<Cliente> clienti = new ArrayList<>();
-        ArrayList<Magazziniere> magazzinieri = new ArrayList<>();
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        LoginClienti listaLogClienti = new LoginClienti();
+        LoginMagaz listalogMagaz = new LoginMagaz();
 
-        clienti.add(new Cliente("giovanni", "password"));
-        magazzinieri.add(new Magazziniere("giovanni2", "pss"));
+        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\gian1\\Desktop\\prova magazzino ser\\Java24-Team1-Warehouse\\src\\files\\login clienti.ser");
 
-        Magazzino magazzino = new Magazzino();
-        magazzino.popolaMagazzino();
+        try {
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            listaLogClienti = (LoginClienti) objectInputStream.readObject();
 
+        } catch (Exception e) {
+            LoginClienti clienti = new LoginClienti();
+        }
+
+        fileInputStream = new FileInputStream("C:\\Users\\gian1\\Desktop\\prova magazzino ser\\Java24-Team1-Warehouse\\src\\files\\login magazzinieri.ser");
+
+        try {
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            listalogMagaz = (LoginMagaz) objectInputStream.readObject();
+        } catch (Exception e) {
+            LoginMagaz magazzinieri = new LoginMagaz();
+        }
+
+
+        int isPres = 0;
 
         Scanner scanner = new Scanner(System.in).useDelimiter("\n");
-
-
         Utente utenteGenerico = null;
 
+
         while (true) {
-            clear();
-            int isPres = 0;
-            System.out.print("Inserisci nome utente già registrato -> ");
-            String nomeUtente = scanner.nextLine().trim();
+            System.out.print("Login o registra (Inserire \"login\" o \"registra\") ->  ");
+            String regOLog = scanner.nextLine().replace(" ", "").toLowerCase();
 
-            for (Utente utenteCliente : clienti) {
-                if (Objects.equals(utenteCliente.getNomeUtente(), nomeUtente)) {
-                    isPres++;
-                    utenteGenerico = utenteCliente;
-                    while (true) {
-                        System.out.print("Inserisci la password -> ");
+            if (regOLog.equals("login")) {
+                while (true) {
+                    System.out.print("Magazziniere o cliente (Inserire \"magazziniere\" o \"cliente\") ->  ");
+                    String clienteOMag = scanner.nextLine().replace(" ", "").toLowerCase();
+
+                    if (clienteOMag.equals("cliente")) {
+
+                        clear();
+                        System.out.print("Inserisci nome utente -> ");
+                        String nomeUtente = scanner.nextLine().trim();
+
+                        for (Cliente cliente : listaLogClienti.getClienti()) {
+                            if (Objects.equals(cliente.getNomeUtente(), nomeUtente)) {
+                                utenteGenerico = cliente;
+                                isPres++;
+                                break;
+                            }
+                        }
+                        if (isPres == 0) {
+                            System.out.println("Utente non registrato!");
+                            continue;
+                        } else {
+                            while (true) {
+                                System.out.print("Inserisci password -> ");
+                                String password = scanner.nextLine();
+                                if (Objects.equals(password, utenteGenerico.getPassword())) {
+                                    break;
+                                } else {
+                                    System.out.println("Password errata!");
+                                }
+                            }
+                            break;
+                        }
+
+                    }
+
+
+                    if (clienteOMag.equals("magazziniere")) {
+
+                        clear();
+                        System.out.print("Inserisci nome utente -> ");
+                        String nomeUtente = scanner.nextLine().trim();
+
+                        for (Magazziniere tMagazzinieri : listalogMagaz.getMagazzinieri()) {
+                            if (Objects.equals(tMagazzinieri.getNomeUtente(), nomeUtente)) {
+                                utenteGenerico = tMagazzinieri;
+                                isPres++;
+                                break;
+                            }
+                        }
+                        if (isPres == 0) {
+                            System.out.println("Utente non registrato!");
+                            continue;
+                        } else {
+                            while (true) {
+                                System.out.print("Inserisci password -> ");
+                                String password = scanner.nextLine();
+                                if (Objects.equals(password, utenteGenerico.getPassword())) {
+                                    break;
+                                } else {
+                                    System.out.println("Password errata!");
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+
+            if (regOLog.equals("registra")) {
+                while (true) {
+                    System.out.print("Magazziniere o cliente (Inserire \"magazziniere\" o \"cliente\") ->  ");
+                    String clienteOMag = scanner.nextLine().replace(" ", "").toLowerCase();
+
+                    if (clienteOMag.equals("cliente")) {
+                        try {
+                            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+                            listaLogClienti = (LoginClienti) objectInputStream.readObject();
+                        }
+                        catch (EOFException e) {
+                            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\gian1\\Desktop\\prova magazzino ser\\Java24-Team1-Warehouse\\src\\files\\login clienti.ser");
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                            objectOutputStream.writeObject(listaLogClienti);
+                        }
+
+
+                        clear();
+                        System.out.print("Inserisci nome utente -> ");
+                        String nomeUtente = scanner.nextLine().trim();
+                        System.out.print("Inserisci password -> ");
                         String password = scanner.nextLine().trim();
-                        if (!Objects.equals(password, utenteGenerico.getPassword())) {
-                            System.out.println("Password errata!");
-                            continue;
-                        }
+                        listaLogClienti.aggiungiClienti(new Cliente(nomeUtente, password));
+
+                        FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\gian1\\Desktop\\prova magazzino ser\\Java24-Team1-Warehouse\\src\\files\\login clienti.ser");
+                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                        objectOutputStream.writeObject(listaLogClienti);
+
                         break;
                     }
-                    break;
-                }
-            }
 
-            if (isPres == 1) {
-                break;
-            }
-
-            for (Utente utenteCliente : magazzinieri) {
-                if (Objects.equals(utenteCliente.getNomeUtente(), nomeUtente)) {
-                    isPres++;
-                    utenteGenerico = utenteCliente;
-                    while (true) {
-                        System.out.print("Inserisci la password -> ");
-                        String password = scanner.nextLine();
-                        if (!Objects.equals(password, utenteGenerico.getPassword())) {
-                            System.out.println("Password errata!");
-                            continue;
+                    if (clienteOMag.equals("magazziniere")) {
+                        try {
+                            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+                            listalogMagaz = (LoginMagaz) objectInputStream.readObject();
                         }
+                        catch (EOFException e) {
+                            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\gian1\\Desktop\\prova magazzino ser\\Java24-Team1-Warehouse\\src\\files\\login magazzinieri.ser");
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                            objectOutputStream.writeObject(listalogMagaz);
+                        }
+
+
+                        clear();
+                        System.out.print("Inserisci nome utente -> ");
+                        String nomeUtente = scanner.nextLine().trim();
+                        System.out.print("Inserisci password -> ");
+                        String password = scanner.nextLine().trim();
+                        listalogMagaz.aggiungiMagaz(new Magazziniere(nomeUtente, password));
+
+                        FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\gian1\\Desktop\\prova magazzino ser\\Java24-Team1-Warehouse\\src\\files\\login magazzinieri.ser");
+                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                        objectOutputStream.writeObject(listalogMagaz);
                         break;
                     }
-                    break;
                 }
             }
+        }
 
-            if (isPres == 1) {
-                break;
-            } else {
-                System.out.println("Utente non trovato!");
-            }
+
+        Magazzino magazzino;
+        fileInputStream = new FileInputStream("C:\\Users\\gian1\\Desktop\\prova magazzino ser\\Java24-Team1-Warehouse\\src\\files\\magazzino.ser");
+
+        try {
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            magazzino = (Magazzino) objectInputStream.readObject();
+        } catch (Exception e) {
+            magazzino = new Magazzino();
         }
 
 
@@ -176,11 +285,24 @@ public class Main {
                             clear();
                             break;
                         case 5:
+                            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\gian1\\Desktop\\prova magazzino ser\\Java24-Team1-Warehouse\\src\\files\\magazzino.ser");
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                            objectOutputStream.writeObject(magazzino);
+
+                            fileOutputStream = new FileOutputStream("C:\\Users\\gian1\\Desktop\\prova magazzino ser\\Java24-Team1-Warehouse\\src\\files\\login clienti.ser");
+                            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                            objectOutputStream.writeObject(listaLogClienti);
+
+                            fileOutputStream = new FileOutputStream("C:\\Users\\gian1\\Desktop\\prova magazzino ser\\Java24-Team1-Warehouse\\src\\files\\login magazzinieri.ser");
+                            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                            objectOutputStream.writeObject(listalogMagaz);
+
+                            objectOutputStream.close();
                             System.exit(0);
                     }
 
                 } catch (Exception e) {
-                    System.out.println("INSERIRE UN'OPZIONE VALIDA!");
+                    System.out.println("INSERIRE UN'OPZIONE VALIDA! " + e.getMessage());
                     scanner.next();
                 }
             }
@@ -503,6 +625,11 @@ public class Main {
                             } //FINE MENU RICERCA
 
                         case 5:
+                            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\gian1\\Desktop\\prova magazzino ser\\Java24-Team1-Warehouse\\src\\files\\magazzino.ser");
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                            objectOutputStream.writeObject(magazzino);
+
+                            objectOutputStream.close();
                             System.exit(0);
                             break;
 
@@ -510,12 +637,13 @@ public class Main {
                             System.out.println("INSERIRE UN'OPZIONE VALIDA!");
                     }
                 } catch (Exception e) {
-                    System.out.println("INSERIRE UN'OPZIONE VALIDA!");
+                    System.out.println("INSERIRE UN'OPZIONE VALIDA! " + e.getLocalizedMessage());
                     scanner.next();
                 }
             }
         }
     }
+
 
     public static void clear() {
         for (int i = 0; i < 40; i++) {
@@ -523,3 +651,4 @@ public class Main {
         }
     }
 }
+
